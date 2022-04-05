@@ -1,0 +1,19 @@
+sources:
+  - name: test
+    handler:
+      graphql:
+        endpoint: https://api.spacex.land/graphql/
+
+additionalTypeDefs: |
+  extend type Subscription {
+    usersAdded: [users]
+  }
+
+transforms:
+  - resolversComposition:
+      mode: bare | wrap
+      compositions:
+        - resolver: "Query.*"
+          composer: ./src/compose/insert_user
+        - resolver: "Mutation.*"
+          composer: ./src/compose/insert_user
